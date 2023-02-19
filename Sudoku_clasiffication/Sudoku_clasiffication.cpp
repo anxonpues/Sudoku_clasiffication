@@ -86,9 +86,9 @@ int main()
 {
     Cell grid[81]{}; 
     /* TO START NEW ONE COPY AND PASTE THE DATA BELOW BETWEEN "" */ 
-    std::string labels = "..9.218.78.296...1.1.8....9.81495..6....8.19.9..6..48.4.8..9...6...789.4197246..8";
+    std::string labels = "2.7815.4..8.436.2...4792.81748951362...364....3.28719447..2.8...2.678.3.....4.2.6";
     size_t ll = labels.length();
-    
+    std::bitset<9> eraser{};
     // write every data available to cell array
     for (int i = 0; i < 81; i++)
     {
@@ -96,6 +96,7 @@ int main()
         grid[i].set_row(i);
         grid[i].set_col(i);
         grid[i].set_gru(i);
+        grid[i].set_sts(eraser);
         char ch = labels[i];
         if(ch=='.')
             grid[i].set_label(0);
@@ -155,8 +156,8 @@ int main()
             if (rc + cc + gc < 10) ajc = ' ';
             std::cout << "\n grid tag " << aji << i << "  :  " << 
                 ajc  <<
-                rc + cc + gc << " data.   " << mask.flip();
-            grid[i].set_sts((mask.flip()));
+                rc + cc + gc << " data.   " << mask.flip() << " cont: " <<  mask.count() << "  " << ((mask.count() == 1) * 1);
+            grid[i].set_sts((mask));    // don't flip mask because is already flipes in previous line 
         }
     }
     std::cout << "\n\n";
