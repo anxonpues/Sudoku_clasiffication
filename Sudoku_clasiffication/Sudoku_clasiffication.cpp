@@ -17,7 +17,6 @@ private:
     int row_count{};
     int col_count{};
     int gru_count{};
-
    
 public:
     void set_sts(std::bitset<9> posible)
@@ -81,15 +80,12 @@ public:
         std::cout << " " << this->id << ", " << this->row << ", " << this->col << ", " << this->gru << ", " << this->label << "." 
             << " possibles "<< this->sts << " ********* " << std::endl;
     }
-
 };
 
 int main()
 {
-    // test operator integer division and modulus
-    // std::cout << "\ninteger division 42/27 = " << 42 / 27 << "  modulus 42%27 = " << 42 % 27 << std::endl; 
-    // done
     Cell grid[81]{}; 
+    /* TO START NEW ONE COPY AND PASTE THE DATA BELOW BETWEEN "" */ 
     std::string labels = "..9.218.78.296...1.1.8....9.81495..6....8.19.9..6..48.4.8..9...6...789.4197246..8";
     size_t ll = labels.length();
     
@@ -107,7 +103,7 @@ int main()
             grid[i].set_label((int)(ch-'0'));
     }
 
-
+    /* Here starts the sweeping of the grid and producing data to help solve Sudoku, yes only help, this is not a solver!! */
     int rc{};
     int cc{};
     int gc{};
@@ -160,10 +156,6 @@ int main()
             std::cout << "\n grid tag " << aji << i << "  :  " << 
                 ajc  <<
                 rc + cc + gc << " data.   " << mask.flip();
-            //std::cout << "\n grid tag " << i << "  :  " << rc + cc  << " data.";
-            //std::cout << "\n grid tag " << i << "  :  " << gc << " data.";
-
-            // set the sts of the grid[i].sts
             grid[i].set_sts((mask.flip()));
         }
     }
