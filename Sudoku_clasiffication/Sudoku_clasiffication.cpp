@@ -14,6 +14,10 @@ private:
     int col{};
     int gru{};
     std::bitset<9> sts{};
+    int row_count{};
+    int col_count{};
+    int gru_count{};
+
    
 public:
     void set_id(int n)
@@ -24,9 +28,21 @@ public:
     {
         this->label = v;
     }
+    int get_label(int v)
+    {
+        return this->label;
+    }
     void set_row(int n)
     {
         this->row = n / 9;
+    }
+    int get_col(int v)
+    {
+        return this->col;
+    }
+    int get_row(int v)
+    {
+        return this->row;
     }
     void set_col(int n)
     {
@@ -40,11 +56,15 @@ public:
         co_part = (n / 3) % 3;
         this->gru = rw_part * 3 + co_part;
     }
+    int get_gru(int v)
+    {
+        return this->gru;
+    }
     void show(int n)
     {
         if (n < 10)
             std::cout << ' ';
-        std::cout << this->id << ", " << this->row << ", " << this->col << ", " << this->gru << ", " << this->label << "." << std::endl ;
+        std::cout << " " << this->id << ", " << this->row << ", " << this->col << ", " << this->gru << ", " << this->label << "." << std::endl;
     }
 
 };
@@ -55,7 +75,7 @@ int main()
     // std::cout << "\ninteger division 42/27 = " << 42 / 27 << "  modulus 42%27 = " << 42 % 27 << std::endl; 
     // done
     Cell grid[81]{};
-    std::string labels = "....218.7..2.6...1...8....9.81..5..6....8....9..6..48.4....9...6...7.9..1.724....";
+    std::string labels = "..9.218.78.296...1.1.8....9.81495..6....8.19.9..61.48.4.8..9...6...789.4197246..8";
     for (int i = 0; i < 81; i++)
     {
         grid[i].set_id(i);
@@ -68,8 +88,53 @@ int main()
         else
             grid[i].set_label((int)(ch-'0'));
     }
-
+    int rc{};
+    int cc{};
+    int gc{};
     for (int i = 0; i < 81; i++)
+    {
+        // counts for every cell the labels in its row, column and grup
+        if (grid[i].get_label(i) == 0)
+        {
+            rc = 0;
+            for (int j = 0; j < 9; j++)
+            {
+                int idx = grid[i].get_row(i) * 9 + j;
+                if (grid[idx].get_label(idx) != 0)
+                    rc++;
+            }
+
+            cc = 0;
+            for (int k = 0; k < 9; k++)
+            {
+                int idx = grid[i].get_col(i) + k * 9;
+                if (grid[idx].get_label(idx) != 0)
+                    cc++;
+            }
+
+            gc = 0;
+            for (int j = 0; j < 3; j++)
+                for (int k = 0; k < 3; k++)
+                {
+                    int idx = grid[i].get_gru(i);
+                    int pcg =((idx/3) * 9 + idx % 3)*3;
+                    if (grid[pcg + j * 9 + k].get_label(pcg + j * 9 + k) != 0)
+                        gc++;
+                }
+            char aji{};
+            char ajc{};
+            if (i < 10) aji = ' ';
+            if (rc + cc + gc < 10) ajc = ' ';
+            std::cout << "\n grid tag " << aji << i << "  :  " << 
+                ajc  <<
+                rc + cc + gc << " data.";
+            //std::cout << "\n grid tag " << i << "  :  " << rc + cc  << " data.";
+            //std::cout << "\n grid tag " << i << "  :  " << gc << " data.";
+        }
+    }
+    std::cout << "\n\n";
+    
+    for (int i = 0 ; i < 81; i++)
         grid[i].show(i);
 
     return 0;
